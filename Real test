@@ -1,0 +1,534 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kona Consulting</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #A0826D;
+    --primary-dark: #7A5F4F;
+    --secondary: #F8A996;
+    --secondary-light: #F5C4A8;
+    --light-tan: #F0EAE0;
+    --light-tan-dark: #E8DFD3;
+    --text-dark: #3D2817;
+    --text-mid: #5C4B3D;
+    --text-muted: #8B7A6B;
+    --white: #FFFFFF;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); color: var(--text-dark); background: var(--white); overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 4rem;
+    background: rgba(160, 130, 109, 0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(248, 169, 150, 0.2);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+  .logo-mark {
+    width: 36px; height: 36px; border: 1.5px solid var(--secondary);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .logo-text { font-family: var(--serif); font-size: 18px; font-weight: 500; color: var(--white); letter-spacing: 0.12em; text-transform: uppercase; }
+  .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 13px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: rgba(247,244,238,0.75); transition: color 0.2s; }
+  .nav-links a:hover { color: var(--secondary-light); }
+  .nav-cta { font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--secondary) !important; border: 1px solid var(--secondary); padding: 0.5rem 1.25rem; transition: all 0.2s !important; }
+  .nav-cta:hover { background: var(--secondary) !important; color: var(--primary) !important; }
+
+  .hero { min-height: 100vh; background: var(--primary); display: flex; align-items: center; position: relative; overflow: hidden; }
+  .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(248,169,150,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(248,169,150,0.06) 1px, transparent 1px); background-size: 60px 60px; }
+  .hero-accent { position: absolute; right: -120px; top: 50%; transform: translateY(-50%); width: 620px; height: 620px; border-radius: 50%; border: 1px solid rgba(248,169,150,0.15); }
+  .hero-accent::before { content: ''; position: absolute; inset: 40px; border-radius: 50%; border: 1px solid rgba(248,169,150,0.1); }
+  .hero-accent::after { content: ''; position: absolute; inset: 80px; border-radius: 50%; border: 1px solid rgba(248,169,150,0.07); }
+  .hero-content { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; padding: 0 4rem; padding-top: 80px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+  .hero-eyebrow-line { width: 48px; height: 1px; background: var(--secondary); }
+  .hero-eyebrow span { font-size: 12px; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; color: var(--secondary-light); }
+  .hero h1 { font-family: var(--serif); font-size: clamp(52px, 7vw, 88px); font-weight: 300; line-height: 1.08; color: var(--white); margin-bottom: 2rem; max-width: 700px; }
+  .hero h1 em { font-style: italic; color: var(--secondary-light); }
+  .hero-sub { font-size: 16px; font-weight: 300; line-height: 1.8; color: rgba(247,244,238,0.65); max-width: 480px; margin-bottom: 3rem; }
+  .hero-actions { display: flex; align-items: center; gap: 1.5rem; }
+  .btn-primary { display: inline-block; text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; background: var(--secondary); color: var(--primary); padding: 1rem 2.5rem; transition: background 0.2s, transform 0.15s; }
+  .btn-primary:hover { background: var(--secondary-light); transform: translateY(-1px); }
+  .btn-ghost { display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; font-size: 13px; font-weight: 400; letter-spacing: 0.08em; color: rgba(247,244,238,0.75); transition: color 0.2s; }
+  .btn-ghost:hover { color: var(--secondary-light); }
+
+  .stats-bar { background: var(--light-tan); border-top: 1px solid var(--light-tan-dark); border-bottom: 1px solid var(--light-tan-dark); }
+  .stats-inner { max-width: 1200px; margin: 0 auto; padding: 0 4rem; display: grid; grid-template-columns: repeat(4, 1fr); }
+  .stat-item { padding: 2.5rem 2rem; border-right: 1px solid var(--light-tan-dark); text-align: center; }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-family: var(--serif); font-size: 48px; font-weight: 300; color: var(--primary); line-height: 1; margin-bottom: 0.5rem; }
+  .stat-num span { color: var(--secondary); }
+  .stat-label { font-size: 12px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+
+  section { padding: 7rem 0; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 4rem; }
+  .section-eyebrow { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+  .section-eyebrow-line { width: 32px; height: 1px; background: var(--secondary); }
+  .section-eyebrow span { font-size: 11px; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; color: var(--secondary); }
+  .section-title { font-family: var(--serif); font-size: clamp(36px, 5vw, 56px); font-weight: 300; line-height: 1.15; color: var(--text-dark); }
+  .section-title em { font-style: italic; color: var(--secondary); }
+  .section-body { font-size: 16px; font-weight: 300; line-height: 1.85; color: var(--text-mid); max-width: 520px; }
+
+  .about { background: var(--white); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-image-block { position: relative; }
+  .about-img-frame { width: 100%; aspect-ratio: 4/5; background: var(--primary-dark); position: relative; overflow: hidden; }
+  .about-img-inner { position: absolute; inset: 0; background: linear-gradient(135deg, var(--primary) 0%, #6B5243 100%); display: flex; align-items: center; justify-content: center; }
+  .about-img-pattern { position: absolute; inset: 0; opacity: 0.15; background-image: linear-gradient(rgba(248,169,150,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(248,169,150,0.4) 1px, transparent 1px); background-size: 30px 30px; }
+  .about-img-text { position: relative; z-index: 2; text-align: center; font-size: 72px; }
+  .about-img-badge { position: absolute; bottom: -20px; right: -20px; background: var(--secondary); padding: 1.5rem; text-align: center; min-width: 130px; }
+  .about-img-badge .num { font-family: var(--serif); font-size: 36px; font-weight: 300; color: var(--primary); display: block; line-height: 1; }
+  .about-img-badge .lbl { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--primary-dark); }
+  .about-values { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+  .about-value { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--light-tan-dark); }
+  .about-value:first-child { border-top: 1px solid var(--light-tan-dark); }
+  .value-num { font-family: var(--serif); font-size: 14px; font-weight: 400; color: var(--secondary); min-width: 24px; padding-top: 2px; }
+  .value-text h4 { font-size: 14px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-dark); margin-bottom: 0.25rem; }
+  .value-text p { font-size: 14px; font-weight: 300; color: var(--text-muted); line-height: 1.6; }
+
+  .services { background: var(--primary); }
+  .services .section-title { color: var(--white); }
+  .services .section-body { color: rgba(245,245,240,0.6); }
+  .services-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 4rem; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(248,169,150,0.15); border: 1px solid rgba(248,169,150,0.15); }
+  .service-card { background: var(--primary); padding: 2.5rem; position: relative; overflow: hidden; transition: background 0.3s; }
+  .service-card::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--secondary); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+  .service-card:hover { background: var(--primary-dark); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-icon { width: 40px; height: 40px; border: 1px solid rgba(248,169,150,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
+  .service-icon svg { width: 18px; height: 18px; stroke: var(--secondary); fill: none; stroke-width: 1.5; }
+  .service-card h3 { font-family: var(--serif); font-size: 22px; font-weight: 400; color: var(--white); margin-bottom: 1rem; line-height: 1.3; }
+  .service-card p { font-size: 14px; font-weight: 300; line-height: 1.8; color: rgba(247,244,238,0.55); }
+
+  .process { background: var(--light-tan); }
+  .process-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .process-steps { display: flex; flex-direction: column; gap: 0; }
+  .process-step { display: flex; gap: 1.5rem; padding: 2rem 0; border-bottom: 1px solid var(--light-tan-dark); }
+  .process-step:first-child { border-top: 1px solid var(--light-tan-dark); }
+  .step-num { font-family: var(--serif); font-size: 40px; font-weight: 300; color: rgba(61,40,23,0.12); line-height: 1; min-width: 48px; }
+  .step-content h4 { font-size: 15px; font-weight: 500; color: var(--text-dark); margin-bottom: 0.4rem; }
+  .step-content p { font-size: 14px; font-weight: 300; color: var(--text-muted); line-height: 1.7; }
+
+  .testimonials { background: var(--white); }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .testimonial-card { border: 1px solid var(--light-tan-dark); padding: 2rem; }
+  .quote-mark { font-family: var(--serif); font-size: 80px; font-weight: 300; color: var(--secondary); line-height: 0.6; margin-bottom: 1rem; display: block; opacity: 0.4; }
+  .testimonial-text { font-family: var(--serif); font-size: 17px; font-weight: 400; line-height: 1.65; color: var(--text-dark); font-style: italic; margin-bottom: 1.5rem; }
+  .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+  .author-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 14px; color: var(--secondary-light); font-weight: 500; }
+  .author-name { font-size: 14px; font-weight: 500; color: var(--text-dark); }
+  .author-title { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+
+  .contact-form { background: var(--light-tan); }
+  .contact-form-inner { max-width: 600px; margin: 0 auto; }
+  .form-group { margin-bottom: 1.5rem; }
+  .form-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 0.5rem; color: var(--text-dark); letter-spacing: 0.04em; }
+  .form-group input, .form-group textarea { width: 100%; padding: 0.75rem 1rem; font-size: 14px; border: 1px solid var(--light-tan-dark); border-radius: 4px; font-family: var(--sans); color: var(--text-dark); transition: border 0.2s, background 0.2s; }
+  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--secondary); background: var(--white); }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+  .form-submit { width: 100%; padding: 0.75rem 1rem; font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; background: var(--secondary); color: var(--primary); border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s, transform 0.15s; }
+  .form-submit:hover { background: var(--secondary-light); transform: translateY(-1px); }
+
+  .cta-section { background: var(--primary); padding: 7rem 0; position: relative; overflow: hidden; }
+  .cta-bg-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: var(--serif); font-size: 240px; font-weight: 300; color: rgba(248,169,150,0.04); white-space: nowrap; pointer-events: none; }
+  .cta-inner { position: relative; z-index: 2; text-align: center; max-width: 700px; margin: 0 auto; padding: 0 4rem; }
+  .cta-inner .section-eyebrow { justify-content: center; }
+  .cta-inner h2 { font-family: var(--serif); font-size: clamp(40px, 6vw, 64px); font-weight: 300; line-height: 1.15; color: var(--white); margin-bottom: 1.5rem; }
+  .cta-inner h2 em { font-style: italic; color: var(--secondary-light); }
+  .cta-inner p { font-size: 16px; font-weight: 300; color: rgba(247,244,238,0.6); margin-bottom: 3rem; line-height: 1.8; }
+  .cta-actions { display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
+
+  footer { background: #4A3A2F; padding: 4rem 0 2rem; border-top: 1px solid rgba(248,169,150,0.15); }
+  .footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 4rem; }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 2rem; }
+  .footer-brand p { font-size: 14px; font-weight: 300; color: rgba(247,244,238,0.45); line-height: 1.8; margin-top: 1rem; }
+  .footer-col h5 { font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--secondary); margin-bottom: 1.25rem; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-col ul li a { font-size: 14px; font-weight: 300; color: rgba(247,244,238,0.5); text-decoration: none; transition: color 0.2s; }
+  .footer-col ul li a:hover { color: var(--secondary-light); }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; }
+  .footer-copy { font-size: 12px; color: rgba(247,244,238,0.3); }
+  .footer-tagline { font-family: var(--serif); font-size: 13px; font-style: italic; color: rgba(248,169,150,0.5); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-content > * { animation: fadeUp 0.8s ease both; }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .container { padding: 0 1.5rem; }
+    .about-grid, .process-grid, .services-header { grid-template-columns: 1fr; gap: 2rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .stats-inner { grid-template-columns: 1fr 1fr; }
+    section { padding: 4rem 0; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-mark">🐕</div>
+    <span class="logo-text">Kona Consulting</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Our Process</a></li>
+    <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-accent"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span>Strategic Business Advisory</span>
+    </div>
+    <h1>Where Strategy<br>Meets <em>Clarity</em></h1>
+    <p class="hero-sub">Kona Consulting partners with organizations to unlock performance, sharpen direction, and build the operational foundations for enduring growth. Loyalty and results—tail-wagging success!</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Start a Conversation</a>
+      <a href="#services" class="btn-ghost">Our Services →</a>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">15<span>+</span></div>
+      <div class="stat-label">Years of Experience</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">200<span>+</span></div>
+      <div class="stat-label">Engagements Delivered</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">94<span>%</span></div>
+      <div class="stat-label">Client Retention Rate</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">18<span></span></div>
+      <div class="stat-label">Industries Served</div>
+    </div>
+  </div>
+</div>
+
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-image-block">
+        <div class="about-img-frame">
+          <div class="about-img-inner">
+            <div class="about-img-pattern"></div>
+            <div class="about-img-text">🐶</div>
+          </div>
+        </div>
+        <div class="about-img-badge">
+          <span class="num">Est.</span>
+          <span class="lbl">2010</span>
+        </div>
+      </div>
+      <div>
+        <div class="section-eyebrow">
+          <div class="section-eyebrow-line"></div>
+          <span>Who We Are</span>
+        </div>
+        <h2 class="section-title">Built on Rigor.<br><em>Driven by Results.</em></h2>
+        <p class="section-body">Kona Consulting was founded on a singular belief: that great strategy is only as good as its execution. Like a loyal staffy puppy, we're devoted to your success—showing up with energy, loyalty, and unwavering commitment to deliver real results.</p>
+        <div class="about-values">
+          <div class="about-value">
+            <span class="value-num">01</span>
+            <div class="value-text">
+              <h4>Objective Thinking</h4>
+              <p>Clear-eyed decisions, free from internal politics.</p>
+            </div>
+          </div>
+          <div class="about-value">
+            <span class="value-num">02</span>
+            <div class="value-text">
+              <h4>Loyalty & Partnership</h4>
+              <p>We embed alongside your team with unwavering commitment.</p>
+            </div>
+          </div>
+          <div class="about-value">
+            <span class="value-num">03</span>
+            <div class="value-text">
+              <h4>Measurable Impact</h4>
+              <p>Every recommendation is tied to results you can track.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="container">
+    <div class="services-header">
+      <div>
+        <div class="section-eyebrow">
+          <div class="section-eyebrow-line"></div>
+          <span>What We Do</span>
+        </div>
+        <h2 class="section-title" style="color:var(--white);">Expert Services.<br><em>Real Outcomes.</em></h2>
+      </div>
+      <div>
+        <p class="section-body">From ambitious startups to established enterprises, we tailor every engagement to your specific challenges and opportunities.</p>
+      </div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3z" stroke-linejoin="round"/><path d="M3 9h18M9 9v12"/></svg>
+        </div>
+        <h3>Corporate Strategy</h3>
+        <p>Define your competitive position and long-term direction. We facilitate strategic planning processes that align leadership and mobilize resources.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3>Operational Excellence</h3>
+        <p>Identify and eliminate inefficiencies across your value chain. Unlock margin and capacity without adding headcount.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87m-4-12a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Organizational Design</h3>
+        <p>Structure your organization for success. Design teams, governance models, and decision-making frameworks that accelerate execution.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>Performance Management</h3>
+        <p>Build metrics and accountability systems that keep your organization oriented toward outcomes. Design dashboards that drive disciplined execution.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        </div>
+        <h3>M&A Advisory</h3>
+        <p>Navigate mergers and integrations with confidence. From due diligence to post-merger integration, we ensure transactions realize their full potential.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Change Management</h3>
+        <p>Ensure transformation efforts stick. Equip leaders with tools and strategies to bring people through change successfully.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <div class="container">
+    <div class="process-grid">
+      <div>
+        <div class="section-eyebrow">
+          <div class="section-eyebrow-line"></div>
+          <span>How We Work</span>
+        </div>
+        <h2 class="section-title">A Proven<br><em>Framework</em></h2>
+        <p class="section-body">Every engagement follows a structured approach that moves from insight to impact—quickly, collaboratively, and with rigorous attention to what the data tells us.</p>
+        <div class="process-steps">
+          <div class="process-step">
+            <span class="step-num">01</span>
+            <div class="step-content">
+              <h4>Discovery & Diagnosis</h4>
+              <p>We immerse ourselves in your business, developing a precise view of where value is being created and lost.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <span class="step-num">02</span>
+            <div class="step-content">
+              <h4>Strategic Alignment</h4>
+              <p>We facilitate working sessions with leadership to build shared understanding and align around clear direction.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <span class="step-num">03</span>
+            <div class="step-content">
+              <h4>Solution Design</h4>
+              <p>Our team develops actionable roadmaps with clear priorities, milestones, and accountability structures.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <span class="step-num">04</span>
+            <div class="step-content">
+              <h4>Implementation & Support</h4>
+              <p>We stay engaged through implementation, providing coaching and course-correction to ensure results are realized.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div></div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:3.5rem;">
+      <div class="section-eyebrow" style="justify-content:center;">
+        <div class="section-eyebrow-line"></div>
+        <span>Client Perspectives</span>
+      </div>
+      <h2 class="section-title">What Our Clients<br><em>Say About Us</em></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <span class="quote-mark">"</span>
+        <p class="testimonial-text">Kona brought a level of analytical rigor that transformed how our leadership team thought about our competitive position. Invaluable.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">MR</div>
+          <div>
+            <div class="author-name">Marcus Reyes</div>
+            <div class="author-title">CEO, Meridian Capital</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <span class="quote-mark">"</span>
+        <p class="testimonial-text">They embedded with us through the hardest part of execution. That made all the difference in actually achieving results.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">SL</div>
+          <div>
+            <div class="author-name">Sarah Linden</div>
+            <div class="author-title">COO, Northbridge Manufacturing</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <span class="quote-mark">"</span>
+        <p class="testimonial-text">One of the best decisions we made. They kept us focused, moved fast, and never lost sight of our strategic objectives.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">JW</div>
+          <div>
+            <div class="author-name">James Whitfield</div>
+            <div class="author-title">President, Stratford Ventures</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-form" id="contact">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:3rem;">
+      <div class="section-eyebrow" style="justify-content:center;">
+        <div class="section-eyebrow-line"></div>
+        <span>Get in Touch</span>
+      </div>
+      <h2 class="section-title">Let's Work Together 🐕</h2>
+      <p class="section-body" style="text-align:center; max-width:600px; margin:1rem auto 0;">Ready to bring loyalty, strategy, and real results? Fill out the form and we'll be excited to connect.</p>
+    </div>
+    <div class="contact-form-inner">
+      <form action="https://formspree.io/f/xdkgzjek" method="POST">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="company">Company Name</label>
+          <input type="text" id="company" name="company">
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required placeholder="Tell us about your challenge or opportunity..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send Message</button>
+      </form>
+      <p style="text-align:center; margin-top:2rem; font-size:14px; color:var(--text-muted);">Or email us directly at <strong>konaconsulting247@gmail.com</strong></p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="cta-bg-text">Kona</div>
+  <div class="cta-inner">
+    <div class="section-eyebrow">
+      <div class="section-eyebrow-line"></div>
+      <span>Questions?</span>
+    </div>
+    <h2>Reach Out<br><em>Directly</em></h2>
+    <p>Email us or use the contact form above. We're always excited to talk strategy.</p>
+    <div class="cta-actions">
+      <a href="mailto:konaconsulting247@gmail.com" class="btn-primary">Email Us</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="nav-logo" style="margin-bottom:0.75rem;">
+          <div class="logo-mark">🐕</div>
+          <span class="logo-text">Kona Consulting</span>
+        </div>
+        <p>Strategic advisors to ambitious leaders. We help organizations think clearly, decide well, and execute with confidence. Loyal partners in your success.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <ul>
+          <li><a href="#services">Corporate Strategy</a></li>
+          <li><a href="#services">Operational Excellence</a></li>
+          <li><a href="#services">Org Design</a></li>
+          <li><a href="#services">M&A Advisory</a></li>
+          <li><a href="#services">Change Management</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#about">About Kona</a></li>
+          <li><a href="#process">Our Process</a></li>
+          <li><a href="#">Case Studies</a></li>
+          <li><a href="#">Insights</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="mailto:konaconsulting247@gmail.com">konaconsulting247@gmail.com</a></li>
+          <li><a href="#">+1 (804) 555-0192</a></li>
+          <li><a href="#">Richmond, VA</a></li>
+          <li><a href="#">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Kona Consulting. All rights reserved.</span>
+      <span class="footer-tagline">Loyalty. Strategy. Results. 🐕</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
